@@ -1,6 +1,7 @@
 package main
 
 import (
+	config "mini-pos/configs"
 	controller "mini-pos/controllers"
 
 	"github.com/labstack/echo/v4"
@@ -8,6 +9,7 @@ import (
 )
 
 func main() {
+	config.ConnectDB()
 	// Configure middleware with the custom claims type
 	config := middleware.JWTConfig{
 		Claims:     &controller.JwtCustomClaims{},

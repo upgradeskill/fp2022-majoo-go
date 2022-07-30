@@ -13,12 +13,6 @@ type Users struct {
 	IsAdmin  int    `json:"is_admin" form:"is_admin"`
 }
 
-func login(email string) (Users, error) {
-	var user Users
-	result := config.DB.Where("email = ?", email).First(&user)
-	return user, result.Error
-}
-
 func (user *Users) CreateUser() error {
 	if err := config.DB.Create(user).Error; err != nil {
 		return err
