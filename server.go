@@ -1,20 +1,29 @@
 package main
 
 import (
+	"log"
 	config "mini-pos/configs"
 	controller "mini-pos/controllers"
 	"mini-pos/structs"
+	"os"
 
+	"github.com/joho/godotenv"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 )
 
 func main() {
+
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatal("Error loading .env file")
+	}
+
 	config.ConnectDB()
 	// Configure middleware with the custom claims type
 	config := middleware.JWTConfig{
 		Claims:     &structs.JwtCustomClaims{},
-		SigningKey: []byte("secret"),
+		SigningKey: []byte(os.Getenv("JWT_SECRET")),
 	}
 
 	route := echo.New()

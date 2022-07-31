@@ -2,12 +2,13 @@ package helpers
 
 import (
 	"log"
+	"os"
 
 	"github.com/golang-jwt/jwt"
 )
 
 func Auth(tokenStr string) (jwt.MapClaims, bool) {
-	hmacSecretString := "secret"
+	hmacSecretString := os.Getenv("JWT_SECRET")
 	hmacSecret := []byte(hmacSecretString)
 	token, err := jwt.Parse(tokenStr, func(token *jwt.Token) (interface{}, error) {
 		// check token signing method etc

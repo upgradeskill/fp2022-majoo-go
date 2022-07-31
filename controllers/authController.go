@@ -35,7 +35,7 @@ func Login(c echo.Context) error {
 			Email:   user.Email,
 			IsAdmin: user.IsAdmin,
 			StandardClaims: jwt.StandardClaims{
-				ExpiresAt: time.Now().Add(time.Hour * 72).Unix(),
+				ExpiresAt: time.Now().Add(24 * time.Hour).Unix(),
 			},
 		}
 
