@@ -19,13 +19,11 @@ func Login(c echo.Context) error {
 	response := new(structs.Response)
 
 	if err != nil {
-		response.Status = 404
 		response.Message = "User tidak ditemukan"
 		return c.JSON(http.StatusNotFound, response)
 	} else {
 
 		if user.Password != password {
-			response.Status = 400
 			response.Message = "Password salah"
 			return c.JSON(http.StatusBadRequest, response)
 		}
@@ -55,7 +53,6 @@ func Login(c echo.Context) error {
 		c.SetCookie(cookie)
 
 		return c.JSON(http.StatusOK, echo.Map{
-			"status":   200,
 			"messsage": "Berhasil login",
 			"data":     user,
 			"token":    t,
