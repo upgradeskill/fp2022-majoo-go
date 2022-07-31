@@ -11,12 +11,6 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-type JwtCustomClaims struct {
-	Email string `json:"email"`
-	Admin bool   `json:"admin"`
-	jwt.StandardClaims
-}
-
 func Login(c echo.Context) error {
 	email := c.FormValue("email")
 	password := c.FormValue("password")
@@ -37,10 +31,10 @@ func Login(c echo.Context) error {
 		}
 
 		// Set custom claims
-		claims := &JwtCustomClaims{
-			user.Email,
-			true,
-			jwt.StandardClaims{
+		claims := &structs.JwtCustomClaims{
+			Email:   user.Email,
+			IsAdmin: user.IsAdmin,
+			StandardClaims: jwt.StandardClaims{
 				ExpiresAt: time.Now().Add(time.Hour * 72).Unix(),
 			},
 		}
