@@ -11,14 +11,23 @@ import (
 )
 
 func Profile(c echo.Context) error {
-	cookie, err := c.Cookie("token")
-	if err != nil {
-		return err
-	}
-
-	token, _ := helpers.Auth(cookie.Value)
 
 	response := new(structs.Response)
+	cookie, err := c.Cookie("token")
+	if err != nil {
+		response.Status = 500
+		response.Message = "Cookie key tidak tersedia"
+		return c.JSON(http.StatusInternalServerError, response)
+	}
+
+	token, isValid := helpers.Auth(cookie.Value)
+
+	if !isValid {
+		response.Status = 401
+		response.Message = "Token tidak valid"
+		return c.JSON(http.StatusUnauthorized, response)
+	}
+
 	response.Status = 200
 	response.Message = "Sukses melihat data"
 	response.Data = token
