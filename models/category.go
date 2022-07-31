@@ -32,9 +32,9 @@ func GetOneCategoryById(id string) (structs.Categories, error) {
 	return category, result.Error
 }
 
-func GetAllCategory(q string) ([]structs.Categories, error) {
+func GetAllCategory(q string, limit int, offset int) ([]structs.Categories, error) {
 	var categories []structs.Categories
-	result := database.DB.Where("name LIKE ?", "%"+q+"%").Find(&categories)
+	result := database.DB.Where("name LIKE ?", "%"+q+"%").Limit(limit).Offset(offset).Find(&categories)
 
 	return categories, result.Error
 }
