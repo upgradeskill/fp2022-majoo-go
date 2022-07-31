@@ -15,7 +15,7 @@ func Login(c echo.Context) error {
 	email := c.FormValue("email")
 	password := c.FormValue("password")
 
-	user, err := model.GetOneByEmail(email) // method get by email
+	user, err := model.GetOneUserByEmail(email) // method get by email
 	response := new(structs.Response)
 
 	if err != nil {

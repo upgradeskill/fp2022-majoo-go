@@ -10,7 +10,7 @@ import (
 
 func CategoryList(c echo.Context) error {
 	response := new(structs.Response)
-	categories, err := model.GetAllCategory(c.QueryParam("keywords")) // method get all
+	categories, err := model.GetAllCategory(c.QueryParam("q")) // method get all
 
 	if err != nil {
 		response.Status = 400

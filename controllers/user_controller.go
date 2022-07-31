@@ -11,7 +11,7 @@ import (
 
 func UserList(c echo.Context) error {
 	response := new(structs.Response)
-	users, err := model.GetAll(c.QueryParam("keywords")) // method get all
+	users, err := model.GetAllUser(c.QueryParam("q")) // method get all
 
 	if err != nil {
 		response.Status = 400
@@ -26,14 +26,15 @@ func UserList(c echo.Context) error {
 }
 
 func UserStore(c echo.Context) error {
-	user := new(model.Users)
+	user := new(structs.Users)
 	c.Bind(user)
 	contentType := c.Request().Header.Get("Content-type")
 	if contentType == "application/json" {
 		fmt.Println("Request dari json")
 	}
 	response := new(structs.Response)
-	if user.CreateUser() != nil { // method create user
+
+	if model.CreateUser(user) != nil { // method create user
 		response.Status = 500
 		response.Message = "Gagal create data"
 		return c.JSON(http.StatusInternalServerError, response)
@@ -46,7 +47,7 @@ func UserStore(c echo.Context) error {
 }
 
 func UserShow(c echo.Context) error {
-	user, err := model.GetOneById(c.Param("id")) // method get by email
+	user, err := model.GetOneUserById(c.Param("id")) // method get by email
 	response := new(structs.Response)
 
 	if err != nil {
@@ -62,10 +63,10 @@ func UserShow(c echo.Context) error {
 }
 
 func UserUpdate(c echo.Context) error {
-	user := new(model.Users)
+	user := new(structs.Users)
 	c.Bind(user)
 	response := new(structs.Response)
-	if user.UpdateUser(c.Param("id")) != nil { // method update user
+	if model.UpdateUser(c.Param("id"), user) != nil { // method update user
 		response.Status = 500
 		response.Message = "Gagal update data"
 		return c.JSON(http.StatusInternalServerError, response)
@@ -78,10 +79,10 @@ func UserUpdate(c echo.Context) error {
 }
 
 func UserDelete(c echo.Context) error {
-	user, _ := model.GetOneById(c.Param("id"))
+	user, _ := model.GetOneUserById(c.Param("id"))
 	response := new(structs.Response)
 
-	if user.DeleteUser() != nil {
+	if model.DeleteUser(&user) != nil {
 		response.Status = 404
 		response.Message = "User tidak ditemukan"
 		return c.JSON(http.StatusNotFound, response)

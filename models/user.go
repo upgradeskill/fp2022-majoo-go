@@ -1,55 +1,46 @@
 package models
 
 import (
-	"fmt"
-	config "mini-pos/configs"
+	database "mini-pos/configs"
+	"mini-pos/structs"
 )
 
-type Users struct {
-	Id       int    `json:"id" form:"id" gorm:"primaryKey"`
-	Email    string `json:"email" form:"email" `
-	Name     string `json:"name" form:"name"`
-	Password string `json:"password" form:"password"`
-	IsAdmin  int    `json:"is_admin" form:"is_admin"`
-}
-
-func (user *Users) CreateUser() error {
-	if err := config.DB.Create(user).Error; err != nil {
+func CreateUser(user *structs.Users) error {
+	if err := database.DB.Create(user).Error; err != nil {
 		return err
 	}
 	return nil
 }
 
-func (user *Users) UpdateUser(id string) error {
-	if err := config.DB.Model(&Users{}).Where("id = ?", id).Updates(user).Error; err != nil {
+func UpdateUser(id string, user *structs.Users) error {
+	if err := database.DB.Model(user).Where("id = ?", id).Updates(user).Error; err != nil {
 		return err
 	}
 	return nil
 }
 
-func (user *Users) DeleteUser() error {
-	if err := config.DB.Delete(user).Error; err != nil {
+func DeleteUser(user *structs.Users) error {
+	if err := database.DB.Delete(user).Error; err != nil {
 		return err
 	}
 	return nil
 }
 
-func GetOneById(id string) (Users, error) {
-	var user Users
-	result := config.DB.Where("id = ?", id).First(&user)
+func GetOneUserById(id string) (structs.Users, error) {
+	var user structs.Users
+	result := database.DB.Where("id = ?", id).First(&user)
 	return user, result.Error
 }
 
-func GetOneByEmail(email string) (Users, error) {
-	fmt.Println("emails", email)
-	var user Users
-	result := config.DB.Where("email = ?", email).First(&user)
+func GetOneUserByEmail(email string) (structs.Users, error) {
+	var user structs.Users
+	result := database.DB.Where("email = ?", email).First(&user)
 	return user, result.Error
 }
 
-func GetAll(keywords string) ([]Users, error) {
-	var users []Users
-	result := config.DB.Where("email LIKE ? OR name LIKE ?", "%"+keywords+"%", "%"+keywords+"%").Find(&users)
+func GetAllUser(q string) ([]structs.Users, error) {
+	var users []structs.Users
+	result := database.DB.Where("email LIKE ? OR name LIKE ?", "%"+q+"%", "%"+q+"%").Find(&users)
 
 	return users, result.Error
 }

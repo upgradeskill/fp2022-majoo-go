@@ -1,44 +1,40 @@
 package models
 
 import (
-	config "mini-pos/configs"
+	database "mini-pos/configs"
+	"mini-pos/structs"
 )
 
-type Categories struct {
-	Id   int    `json:"id" form:"id" gorm:"primaryKey"`
-	Name string `json:"name" form:"name"`
-}
-
-func (category *Categories) CreateCategory() error {
-	if err := config.DB.Create(category).Error; err != nil {
+func CreateCategory(category *structs.Categories) error {
+	if err := database.DB.Create(category).Error; err != nil {
 		return err
 	}
 	return nil
 }
 
-func (category *Categories) UpdateCategory(id string) error {
-	if err := config.DB.Model(&Categories{}).Where("id = ?", id).Updates(category).Error; err != nil {
+func UpdateCategory(id string, category *structs.Categories) error {
+	if err := database.DB.Model(category).Where("id = ?", id).Updates(category).Error; err != nil {
 		return err
 	}
 	return nil
 }
 
-func (category *Categories) DeleteCategory() error {
-	if err := config.DB.Delete(category).Error; err != nil {
+func DeleteCategory(category *structs.Categories) error {
+	if err := database.DB.Delete(category).Error; err != nil {
 		return err
 	}
 	return nil
 }
 
-func GetOneCategoryById(id string) (Categories, error) {
-	var cateogry Categories
-	result := config.DB.Where("id = ?", id).First(&cateogry)
-	return cateogry, result.Error
+func GetOneCategoryById(id string) (structs.Categories, error) {
+	var category structs.Categories
+	result := database.DB.Where("id = ?", id).First(&category)
+	return category, result.Error
 }
 
-func GetAllCategory(keywords string) ([]Categories, error) {
-	var cateogries []Categories
-	result := config.DB.Where("name LIKE ?", "%"+keywords+"%").Find(&cateogries)
+func GetAllCategory(q string) ([]structs.Categories, error) {
+	var categories []structs.Categories
+	result := database.DB.Where("name LIKE ?", "%"+q+"%", "%"+q+"%").Find(&categories)
 
-	return cateogries, result.Error
+	return categories, result.Error
 }
