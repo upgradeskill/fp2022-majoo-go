@@ -35,5 +35,14 @@ func main() {
 	userRoute.PUT("/update/:id", controller.UserUpdate)
 	userRoute.DELETE("/delete/:id", controller.UserDelete)
 
+	categoryRoute := route.Group("/category")
+	categoryRoute.Use(middleware.JWTWithConfig(config))
+
+	categoryRoute.GET("", controller.CategoryList)
+	// categoryRoute.POST("/store", controller.UserStore)
+	// categoryRoute.GET("/show/:id", controller.UserShow)
+	// categoryRoute.PUT("/update/:id", controller.UserUpdate)
+	// categoryRoute.DELETE("/delete/:id", controller.UserDelete)
+
 	route.Start(":9000")
 }

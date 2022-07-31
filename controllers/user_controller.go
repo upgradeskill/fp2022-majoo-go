@@ -36,7 +36,7 @@ func UserStore(c echo.Context) error {
 	if user.CreateUser() != nil { // method create user
 		response.Status = 500
 		response.Message = "Gagal create data"
-		return c.JSON(http.StatusBadRequest, response)
+		return c.JSON(http.StatusInternalServerError, response)
 	} else {
 		response.Status = 200
 		response.Message = "Sukses create data"
@@ -52,7 +52,7 @@ func UserShow(c echo.Context) error {
 	if err != nil {
 		response.Status = 404
 		response.Message = "User tidak ditemukan"
-		return c.JSON(http.StatusBadRequest, response)
+		return c.JSON(http.StatusNotFound, response)
 	} else {
 		response.Status = 200
 		response.Message = "Sukses melihat data"
@@ -68,7 +68,7 @@ func UserUpdate(c echo.Context) error {
 	if user.UpdateUser(c.Param("id")) != nil { // method update user
 		response.Status = 500
 		response.Message = "Gagal update data"
-		return c.JSON(http.StatusBadRequest, response)
+		return c.JSON(http.StatusInternalServerError, response)
 	} else {
 		response.Status = 200
 		response.Message = "Sukses update data"
