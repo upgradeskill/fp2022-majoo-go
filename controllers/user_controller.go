@@ -2,12 +2,29 @@ package controllers
 
 import (
 	"fmt"
+	"mini-pos/helpers"
 	model "mini-pos/models"
 	"mini-pos/structs"
 	"net/http"
 
 	"github.com/labstack/echo/v4"
 )
+
+func Profile(c echo.Context) error {
+	cookie, err := c.Cookie("token")
+	if err != nil {
+		return err
+	}
+
+	token, _ := helpers.Auth(cookie.Value)
+
+	response := new(structs.Response)
+	response.Status = 200
+	response.Message = "Sukses melihat data"
+	response.Data = token
+
+	return c.JSON(http.StatusOK, response)
+}
 
 func UserList(c echo.Context) error {
 	response := new(structs.Response)

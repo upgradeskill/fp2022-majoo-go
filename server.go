@@ -30,6 +30,7 @@ func main() {
 	userRoute := route.Group("/user")
 	userRoute.Use(middleware.JWTWithConfig(config))
 	userRoute.GET("", controller.UserList)
+	userRoute.GET("/profile", controller.Profile)
 	userRoute.POST("/store", controller.UserStore)
 	userRoute.GET("/show/:id", controller.UserShow)
 	userRoute.PUT("/update/:id", controller.UserUpdate)

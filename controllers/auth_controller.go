@@ -48,6 +48,12 @@ func Login(c echo.Context) error {
 			return err
 		}
 
+		cookie := new(http.Cookie)
+		cookie.Name = "token"
+		cookie.Value = t
+		cookie.Expires = time.Now().Add(24 * time.Hour)
+		c.SetCookie(cookie)
+
 		return c.JSON(http.StatusOK, echo.Map{
 			"status":   200,
 			"messsage": "Berhasil login",
