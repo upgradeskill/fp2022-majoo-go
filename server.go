@@ -26,14 +26,14 @@ func main() {
 	route.POST("/login", controller.Login)
 
 	// Restricted group
-	r := route.Group("/user")
-	r.Use(middleware.JWTWithConfig(config))
+	userRoute := route.Group("/user")
+	userRoute.Use(middleware.JWTWithConfig(config))
 
-	r.GET("", controller.List)
-	r.POST("/store", controller.Store)
-	r.GET("/show/:id", controller.Show)
-	r.PUT("/update/:id", controller.Update)
-	r.DELETE("/delete/:id", controller.Delete)
+	userRoute.GET("", controller.UserList)
+	userRoute.POST("/store", controller.UserStore)
+	userRoute.GET("/show/:id", controller.UserShow)
+	userRoute.PUT("/update/:id", controller.UserUpdate)
+	userRoute.DELETE("/delete/:id", controller.UserDelete)
 
 	route.Start(":9000")
 }

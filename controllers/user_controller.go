@@ -9,7 +9,7 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-func List(c echo.Context) error {
+func UserList(c echo.Context) error {
 	response := new(structs.Response)
 	users, err := model.GetAll(c.QueryParam("keywords")) // method get all
 
@@ -25,7 +25,7 @@ func List(c echo.Context) error {
 	}
 }
 
-func Store(c echo.Context) error {
+func UserStore(c echo.Context) error {
 	user := new(model.Users)
 	c.Bind(user)
 	contentType := c.Request().Header.Get("Content-type")
@@ -45,7 +45,7 @@ func Store(c echo.Context) error {
 	}
 }
 
-func Show(c echo.Context) error {
+func UserShow(c echo.Context) error {
 	user, err := model.GetOneById(c.Param("id")) // method get by email
 	response := new(structs.Response)
 
@@ -61,7 +61,7 @@ func Show(c echo.Context) error {
 	}
 }
 
-func Update(c echo.Context) error {
+func UserUpdate(c echo.Context) error {
 	user := new(model.Users)
 	c.Bind(user)
 	response := new(structs.Response)
@@ -77,7 +77,7 @@ func Update(c echo.Context) error {
 	}
 }
 
-func Delete(c echo.Context) error {
+func UserDelete(c echo.Context) error {
 	user, _ := model.GetOneById(c.Param("id"))
 	response := new(structs.Response)
 
