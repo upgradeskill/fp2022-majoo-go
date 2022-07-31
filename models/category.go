@@ -34,7 +34,7 @@ func GetOneCategoryById(id string) (structs.Categories, error) {
 
 func GetAllCategory(q string) ([]structs.Categories, error) {
 	var categories []structs.Categories
-	result := database.DB.Where("name LIKE ?", "%"+q+"%", "%"+q+"%").Find(&categories)
+	result := database.DB.Where("name LIKE ?", "%"+q+"%").Find(&categories)
 
 	return categories, result.Error
 }
