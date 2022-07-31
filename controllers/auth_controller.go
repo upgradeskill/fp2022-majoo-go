@@ -4,6 +4,9 @@ import (
 	"net/http"
 	"time"
 
+	model "mini-pos/models"
+	"mini-pos/structs"
+
 	"github.com/golang-jwt/jwt"
 	"github.com/labstack/echo/v4"
 )
@@ -15,33 +18,47 @@ type JwtCustomClaims struct {
 }
 
 func Login(c echo.Context) error {
-	username := c.FormValue("username")
+	email := c.FormValue("email")
 	password := c.FormValue("password")
 
-	// Throws unauthorized error
-	if username != "jon" || password != "shhh!" {
-		return echo.ErrUnauthorized
-	}
+	user, err := model.GetOneByEmail(email) // method get by email
+	response := new(structs.Response)
 
-	// Set custom claims
-	claims := &JwtCustomClaims{
-		"Jon Snow",
-		true,
-		jwt.StandardClaims{
-			ExpiresAt: time.Now().Add(time.Hour * 72).Unix(),
-		},
-	}
-
-	// Create token with claims
-	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-
-	// Generate encoded token and send it as response.
-	t, err := token.SignedString([]byte("secret"))
 	if err != nil {
-		return err
-	}
+		response.Status = 404
+		response.Message = "User tidak ditemukan"
+		return c.JSON(http.StatusNotFound, response)
+	} else {
 
-	return c.JSON(http.StatusOK, echo.Map{
-		"token": t,
-	})
+		if user.Password != password {
+			response.Status = 400
+			response.Message = "Password salah"
+			return c.JSON(http.StatusBadRequest, response)
+		}
+
+		// Set custom claims
+		claims := &JwtCustomClaims{
+			user.Email,
+			true,
+			jwt.StandardClaims{
+				ExpiresAt: time.Now().Add(time.Hour * 72).Unix(),
+			},
+		}
+
+		// Create token with claims
+		token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+
+		// Generate encoded token and send it as response.
+		t, err := token.SignedString([]byte("secret"))
+		if err != nil {
+			return err
+		}
+
+		return c.JSON(http.StatusOK, echo.Map{
+			"status":   200,
+			"messsage": "Berhasil login",
+			"data":     user,
+			"token":    t,
+		})
+	}
 }

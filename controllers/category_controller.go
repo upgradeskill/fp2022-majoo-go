@@ -10,7 +10,7 @@ import (
 
 func CategoryList(c echo.Context) error {
 	response := new(structs.Response)
-	users, err := model.GetAllCategory(c.QueryParam("keywords")) // method get all
+	categories, err := model.GetAllCategory(c.QueryParam("keywords")) // method get all
 
 	if err != nil {
 		response.Status = 400
@@ -19,7 +19,7 @@ func CategoryList(c echo.Context) error {
 	} else {
 		response.Status = 200
 		response.Message = "Sukses melihat data"
-		response.Data = users
+		response.Data = categories
 		return c.JSON(http.StatusOK, response)
 	}
 }
