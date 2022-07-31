@@ -48,6 +48,7 @@ func OutletStore(c echo.Context) error {
 
 		userId, ok := user["id"]
 		if !ok {
+			response.Message = "Convert id gagal"
 			return c.JSON(http.StatusInternalServerError, response)
 		}
 
