@@ -20,9 +20,9 @@ func Profile(c echo.Context) error {
 		return c.JSON(http.StatusInternalServerError, response)
 	}
 
-	token, isValid := helpers.Auth(cookie.Value)
+	user, isAuth := helpers.Auth(cookie.Value)
 
-	if !isValid {
+	if !isAuth {
 		response.Status = 401
 		response.Message = "Token tidak valid"
 		return c.JSON(http.StatusUnauthorized, response)
@@ -30,7 +30,7 @@ func Profile(c echo.Context) error {
 
 	response.Status = 200
 	response.Message = "Sukses melihat data"
-	response.Data = token
+	response.Data = user
 
 	return c.JSON(http.StatusOK, response)
 }
