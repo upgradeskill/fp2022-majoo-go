@@ -34,6 +34,7 @@ func main() {
 
 	// Login route
 	route.POST("/login", controller.Login)
+	route.GET("/redis-ping", controller.RedisPing)
 
 	// Restricted group
 	userRoute := route.Group("/user")
@@ -52,6 +53,14 @@ func main() {
 	categoryRoute.GET("/show/:id", controller.CategoryShow)
 	categoryRoute.PUT("/update/:id", controller.CategoryUpdate)
 	categoryRoute.DELETE("/delete/:id", controller.CategoryDelete)
+
+	outletRoute := route.Group("/outlet")
+	outletRoute.Use(middleware.JWTWithConfig(config))
+	outletRoute.GET("", controller.OutletList)
+	outletRoute.POST("/store", controller.OutletStore)
+	// outletRoute.GET("/show/:id", controller.OutletShow)
+	// outletRoute.PUT("/update/:id", controller.OutletUpdate)
+	// outletRoute.DELETE("/delete/:id", controller.OutletDelete)
 
 	route.Start(":9000")
 }

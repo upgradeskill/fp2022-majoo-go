@@ -1,9 +1,12 @@
 package controllers
 
 import (
+	"fmt"
 	"net/http"
+	"os"
 	"time"
 
+	"mini-pos/configs"
 	model "mini-pos/models"
 	"mini-pos/structs"
 
@@ -30,6 +33,7 @@ func Login(c echo.Context) error {
 
 		// Set custom claims
 		claims := &structs.JwtCustomClaims{
+			Id:      user.Id,
 			Email:   user.Email,
 			IsAdmin: user.IsAdmin,
 			StandardClaims: jwt.StandardClaims{
@@ -41,7 +45,7 @@ func Login(c echo.Context) error {
 		token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 
 		// Generate encoded token and send it as response.
-		t, err := token.SignedString([]byte("secret"))
+		t, err := token.SignedString([]byte(os.Getenv("JWT_SECRET")))
 		if err != nil {
 			return err
 		}
@@ -52,10 +56,23 @@ func Login(c echo.Context) error {
 		cookie.Expires = time.Now().Add(24 * time.Hour)
 		c.SetCookie(cookie)
 
+		fmt.Println("cookie", cookie)
+
 		return c.JSON(http.StatusOK, echo.Map{
 			"messsage": "Berhasil login",
 			"data":     user,
 			"token":    t,
 		})
 	}
+}
+
+func RedisPing(c echo.Context) error {
+	client := configs.RedisClient()
+
+	pong, err := client.Ping().Result()
+	if err != nil {
+		return err
+	}
+
+	return c.JSON(http.StatusOK, pong)
 }

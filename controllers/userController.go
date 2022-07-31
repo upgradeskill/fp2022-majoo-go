@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"fmt"
 	"mini-pos/helpers"
 	model "mini-pos/models"
 	"mini-pos/structs"
@@ -10,9 +11,9 @@ import (
 )
 
 func Profile(c echo.Context) error {
-
 	response := new(structs.Response)
 	cookie, err := c.Cookie("token")
+	fmt.Println("token", cookie)
 	if err != nil {
 		response.Message = "Cookie key tidak tersedia"
 		return c.JSON(http.StatusInternalServerError, response)
