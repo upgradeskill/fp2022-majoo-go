@@ -5,13 +5,16 @@ import (
 	model "mini-pos/models"
 	"mini-pos/structs"
 	"net/http"
+	"strconv"
 
 	"github.com/labstack/echo/v4"
 )
 
 func OutletList(c echo.Context) error {
-	response := new(structs.Response)
-	outlets, err := model.GetAllOutlet(c.QueryParam("q")) // method get all
+	response := new(structs.ResponsePagination)
+	limit, _ := strconv.Atoi(c.QueryParam("limit"))
+	offset, _ := strconv.Atoi(c.QueryParam("offset"))
+	outlets, err := model.GetAllOutlet(c.QueryParam("q"), limit, offset) // method get all
 
 	if err != nil {
 		response.Message = "Gagal melihat data"
@@ -19,6 +22,8 @@ func OutletList(c echo.Context) error {
 	} else {
 		response.Message = "Sukses melihat data"
 		response.Data = outlets
+		response.Limit = limit
+		response.Offset = offset
 		return c.JSON(http.StatusOK, response)
 	}
 }

@@ -32,9 +32,9 @@ func GetOneOutletById(id string) (structs.Outlets, error) {
 	return outlet, result.Error
 }
 
-func GetAllOutlet(q string) ([]structs.Outlets, error) {
+func GetAllOutlet(q string, limit int, offset int) ([]structs.Outlets, error) {
 	var outlets []structs.Outlets
-	result := database.DB.Where("name LIKE ?", "%"+q+"%").Find(&outlets)
+	result := database.DB.Preload("OutletUsers").Where("name LIKE ?", "%"+q+"%").Limit(limit).Offset(offset).Find(&outlets)
 
 	return outlets, result.Error
 }
