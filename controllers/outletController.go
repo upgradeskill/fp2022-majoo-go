@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"fmt"
 	"mini-pos/helpers"
 	model "mini-pos/models"
 	"mini-pos/structs"
@@ -12,9 +13,26 @@ import (
 
 func OutletList(c echo.Context) error {
 	response := new(structs.ResponsePagination)
+
+	auth, _ := helpers.Auth(c)
+	userId := fmt.Sprint(auth["id"])
+	outletUsers, err := model.GetOutletUserByUserId(userId)
+	outletsId := make([]interface{}, len(outletUsers))
+
+	for i := 0; i < len(outletUsers); i++ {
+		outletsId[i] = outletUsers[i].OutletId
+	}
+
+	fmt.Println("user", outletsId)
+
+	if err != nil {
+		response.Message = "Kamu belum memiliki outlet"
+		return c.JSON(http.StatusBadRequest, response)
+	}
+
 	limit, _ := strconv.Atoi(c.QueryParam("limit"))
 	offset, _ := strconv.Atoi(c.QueryParam("offset"))
-	outlets, err := model.GetAllOutlet(c.QueryParam("q"), limit, offset) // method get all
+	outlets, err := model.GetAllOutlet(c.QueryParam("q"), outletsId, limit, offset) // method get all
 
 	if err != nil {
 		response.Message = "Gagal melihat data"
@@ -38,27 +56,20 @@ func OutletStore(c echo.Context) error {
 		response.Message = "Gagal create data"
 		return c.JSON(http.StatusInternalServerError, response)
 	} else {
-		cookie, err := c.Cookie("token")
-		if err != nil {
-			response.Message = "Cookie key tidak tersedia"
-			return c.JSON(http.StatusInternalServerError, response)
-		}
-
-		user, isAuth := helpers.Auth(cookie.Value)
-
+		auth, isAuth := helpers.Auth(c)
 		if !isAuth {
 			response.Message = "Token tidak valid"
 			return c.JSON(http.StatusUnauthorized, response)
 		}
 
-		userId, ok := user["id"]
-		if !ok {
+		userId, err := strconv.Atoi(fmt.Sprint(auth["id"]))
+		if err != nil {
 			response.Message = "Convert id gagal"
 			return c.JSON(http.StatusInternalServerError, response)
 		}
 
 		outletUser := new(structs.OutletUsers)
-		outletUser.UserId = int(userId.(float64))
+		outletUser.UserId = userId
 		outletUser.OutletId = outlet.Id
 
 		if model.CreateOutletUser(outletUser) != nil { // method create outlet

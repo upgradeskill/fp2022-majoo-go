@@ -1,36 +1,12 @@
 package controllers
 
 import (
-	"fmt"
-	"mini-pos/helpers"
 	model "mini-pos/models"
 	"mini-pos/structs"
 	"net/http"
 
 	"github.com/labstack/echo/v4"
 )
-
-func Profile(c echo.Context) error {
-	response := new(structs.Response)
-	cookie, err := c.Cookie("token")
-	fmt.Println("token", cookie)
-	if err != nil {
-		response.Message = "Cookie key tidak tersedia"
-		return c.JSON(http.StatusInternalServerError, response)
-	}
-
-	user, isAuth := helpers.Auth(cookie.Value)
-
-	if !isAuth {
-		response.Message = "Token tidak valid"
-		return c.JSON(http.StatusUnauthorized, response)
-	}
-
-	response.Message = "Sukses melihat data"
-	response.Data = user
-
-	return c.JSON(http.StatusOK, response)
-}
 
 func UserList(c echo.Context) error {
 	response := new(structs.Response)

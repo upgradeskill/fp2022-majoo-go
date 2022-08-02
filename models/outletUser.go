@@ -11,3 +11,9 @@ func CreateOutletUser(outletUser *structs.OutletUsers) error {
 	}
 	return nil
 }
+
+func GetOutletUserByUserId(userId string) ([]structs.OutletUsers, error) {
+	var outletUsers []structs.OutletUsers
+	result := database.DB.Where("user_id = ?", userId).Find(&outletUsers)
+	return outletUsers, result.Error
+}
