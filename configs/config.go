@@ -4,8 +4,18 @@ import (
 	"database/sql"
 	"os"
 
+	"github.com/joho/godotenv"
 	"github.com/labstack/gommon/log"
 )
+
+func init() {
+
+	err := godotenv.Load(".env")
+
+	if err != nil {
+		log.Fatal("Error loading .env file")
+	}
+}
 
 func ConnectDBMySql() (*sql.DB, error) {
 
