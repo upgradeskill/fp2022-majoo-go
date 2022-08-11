@@ -35,12 +35,13 @@ func GetOneTransactionById(id string) (structs.Transactions, error) {
 	return transaction, result.Error
 }
 
-func GetAllTransaction(q string, limit int, offset int) ([]structs.Transactions, error) {
+func GetAllTransaction(q string, outletsId []interface{}, limit int, offset int) ([]structs.Transactions, error) {
 	var transactions []structs.Transactions
 
 	result := database.DB.
 		Preload("Outlet").
 		Preload("TransactionDetails.Product.Category").
+		Where("outlet_id IN ?", outletsId).
 		Where("code LIKE ?", "%"+q+"%").
 		Limit(limit).
 		Offset(offset).

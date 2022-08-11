@@ -16,9 +16,25 @@ import (
 func TransactionList(c echo.Context) error {
 	response := new(structs.ResponsePagination)
 
+	auth, _ := helpers.Auth(c)
+	userId := fmt.Sprint(auth["id"])
+	outletUsers, err := model.GetOutletUserByUserId(userId)
+
+	if err != nil {
+		response.Message = "Kamu belum memiliki outlet"
+		return c.JSON(http.StatusBadRequest, response)
+	}
+
+	outletsId := make([]interface{}, len(outletUsers))
+	for i := 0; i < len(outletUsers); i++ {
+		outletsId[i] = outletUsers[i].OutletId
+	}
+
+	fmt.Println("outlets", outletsId)
+
 	limit, _ := strconv.Atoi(c.QueryParam("limit"))
 	offset, _ := strconv.Atoi(c.QueryParam("offset"))
-	categories, err := model.GetAllTransaction(c.QueryParam("q"), limit, offset) // method get all
+	categories, err := model.GetAllTransaction(c.QueryParam("q"), outletsId, limit, offset) // method get all
 
 	if err != nil {
 		response.Message = "Gagal melihat data"
@@ -30,10 +46,6 @@ func TransactionList(c echo.Context) error {
 		response.Offset = offset
 		return c.JSON(http.StatusOK, response)
 	}
-}
-
-type Host struct {
-	Name string
 }
 
 func TransactionStore(c echo.Context) error {
