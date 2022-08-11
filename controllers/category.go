@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"fmt"
+	"mini-pos/helpers"
 	model "mini-pos/models"
 	"mini-pos/structs"
 	"net/http"
@@ -13,9 +14,23 @@ import (
 func CategoryList(c echo.Context) error {
 	response := new(structs.ResponsePagination)
 
+	auth, _ := helpers.Auth(c)
+	userId := fmt.Sprint(auth["id"])
+	outletUsers, err := model.GetOutletUserByUserId(userId)
+
+	if err != nil {
+		response.Message = "Kamu belum memiliki outlet"
+		return c.JSON(http.StatusBadRequest, response)
+	}
+
+	outletsId := make([]interface{}, len(outletUsers))
+	for i := 0; i < len(outletUsers); i++ {
+		outletsId[i] = outletUsers[i].OutletId
+	}
+
 	limit, _ := strconv.Atoi(c.QueryParam("limit"))
 	offset, _ := strconv.Atoi(c.QueryParam("offset"))
-	categories, err := model.GetAllCategory(c.QueryParam("q"), limit, offset) // method get all
+	categories, err := model.GetAllCategory(c.QueryParam("q"), outletsId, limit, offset) // method get all
 
 	if err != nil {
 		response.Message = "Gagal melihat data"

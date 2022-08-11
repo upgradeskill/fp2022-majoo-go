@@ -17,7 +17,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiSm9uIFNub3ciLCJhZG1pbiI6dHJ1ZSwiZXhwIjoxNjU5NDQ1MTQxfQ.d3IxeAPgwyap6FCuvKvrmUShNZmElD8ZBzP81jsDLg8",
+									"value": "{{token}}",
 									"type": "string"
 								}
 							]
@@ -25,28 +25,26 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:9000/category?q=makanan",
+							"raw": "{{base_url}}/category?limit=1&offset=0",
 							"host": [
-								"localhost"
+								"{{base_url}}"
 							],
-							"port": "9000",
 							"path": [
 								"category"
 							],
 							"query": [
 								{
 									"key": "limit",
-									"value": "2",
-									"disabled": true
+									"value": "1"
 								},
 								{
 									"key": "offset",
-									"value": "2",
-									"disabled": true
+									"value": "0"
 								},
 								{
 									"key": "q",
-									"value": "makanan"
+									"value": "makanan",
+									"disabled": true
 								}
 							]
 						}
@@ -61,7 +59,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiSm9uIFNub3ciLCJhZG1pbiI6dHJ1ZSwiZXhwIjoxNjU5NDQ1MTQxfQ.d3IxeAPgwyap6FCuvKvrmUShNZmElD8ZBzP81jsDLg8",
+									"value": "{{token}}",
 									"type": "string"
 								}
 							]
@@ -70,7 +68,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"Peralatan Rumah Tangga\"\r\n}",
+							"raw": "{\r\n    \"name\": \"Peralatan Masak\",\r\n    \"outlet_id\": 17\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -78,14 +76,109 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:9000/category/store",
+							"raw": "{{base_url}}/category/store",
 							"host": [
-								"localhost"
+								"{{base_url}}"
 							],
-							"port": "9000",
 							"path": [
 								"category",
 								"store"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "put",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Peralatan Mandi\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/category/update/8",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"category",
+								"update",
+								"8"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "show",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/category/show/7",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"category",
+								"show",
+								"7"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/category/delete/7",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"category",
+								"delete",
+								"7"
 							]
 						}
 					},
@@ -104,7 +197,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImVrYXByYXRhbWEzNjNAZ21haWwuY29tIiwiaXNfYWRtaW4iOjAsImV4cCI6MTY1OTUxNjYwM30.i4nUgjRb9xsHoWDQdkOb3QBzVJ3Z-KhNjcRMLYbRXN0",
+									"value": "{{token}}",
 									"type": "string"
 								}
 							]
@@ -112,18 +205,18 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:9000/user?q=363",
+							"raw": "{{base_url}}/user",
 							"host": [
-								"localhost"
+								"{{base_url}}"
 							],
-							"port": "9000",
 							"path": [
 								"user"
 							],
 							"query": [
 								{
 									"key": "q",
-									"value": "363"
+									"value": "363",
+									"disabled": true
 								}
 							]
 						}
@@ -138,7 +231,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTgsImVtYWlsIjoiYWRtaW5AZ21haWwuY29tIiwiaXNfYWRtaW4iOjEsImV4cCI6MTY1OTM1NzI5MX0.TYHhN9tMRqqwuMC7R5bx11ZNbkQOy82At4PGXoc5phM",
+									"value": "{{token}}",
 									"type": "string"
 								}
 							]
@@ -146,11 +239,10 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:9000/user/profile",
+							"raw": "{{base_url}}/user/profile",
 							"host": [
-								"localhost"
+								"{{base_url}}"
 							],
-							"port": "9000",
 							"path": [
 								"user",
 								"profile"
@@ -167,7 +259,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiSm9uIFNub3ciLCJhZG1pbiI6dHJ1ZSwiZXhwIjoxNjU5NDQ1MTQxfQ.d3IxeAPgwyap6FCuvKvrmUShNZmElD8ZBzP81jsDLg8",
+									"value": "{{token}}",
 									"type": "string"
 								}
 							]
@@ -175,11 +267,10 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:9000/user/show/1",
+							"raw": "{{base_url}}/user/show/1",
 							"host": [
-								"localhost"
+								"{{base_url}}"
 							],
-							"port": "9000",
 							"path": [
 								"user",
 								"show",
@@ -197,7 +288,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiSm9uIFNub3ciLCJhZG1pbiI6dHJ1ZSwiZXhwIjoxNjU5NDQ1MTQxfQ.d3IxeAPgwyap6FCuvKvrmUShNZmElD8ZBzP81jsDLg8",
+									"value": "{{token}}",
 									"type": "string"
 								}
 							]
@@ -206,7 +297,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"email\": \"admin2@gmail.coms\",\r\n    \"name\": \"admin2\",\r\n    \"password\": \"1234\",\r\n    \"is_admin\": 1\r\n}",
+							"raw": "{\r\n    \"email\": \"admin3@gmail.coms\",\r\n    \"name\": \"admin2\",\r\n    \"password\": \"1234\",\r\n    \"is_admin\": 1\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -214,11 +305,10 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:9000/user/store",
+							"raw": "{{base_url}}/user/store",
 							"host": [
-								"localhost"
+								"{{base_url}}"
 							],
-							"port": "9000",
 							"path": [
 								"user",
 								"store"
@@ -235,7 +325,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiSm9uIFNub3ciLCJhZG1pbiI6dHJ1ZSwiZXhwIjoxNjU5NDQ1MTQxfQ.d3IxeAPgwyap6FCuvKvrmUShNZmElD8ZBzP81jsDLg8",
+									"value": "{{token}}",
 									"type": "string"
 								}
 							]
@@ -252,11 +342,10 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:9000/user/update/1",
+							"raw": "{{base_url}}/user/update/1",
 							"host": [
-								"localhost"
+								"{{base_url}}"
 							],
-							"port": "9000",
 							"path": [
 								"user",
 								"update",
@@ -274,7 +363,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiSm9uIFNub3ciLCJhZG1pbiI6dHJ1ZSwiZXhwIjoxNjU5NDQ1MTQxfQ.d3IxeAPgwyap6FCuvKvrmUShNZmElD8ZBzP81jsDLg8",
+									"value": "{{token}}",
 									"type": "string"
 								}
 							]
@@ -282,11 +371,10 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "localhost:9000/user/delete/19",
+							"raw": "{{base_url}}/user/delete/19",
 							"host": [
-								"localhost"
+								"{{base_url}}"
 							],
-							"port": "9000",
 							"path": [
 								"user",
 								"delete",
@@ -309,7 +397,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJla2FwcmF0YW1hMzYzQGdtYWlsLmNvbSIsImlzX2FkbWluIjowLCJleHAiOjE2NTk1MjY5NzF9.R6njBinMk8WUjrj-66WeAVS_JDaBwNVhBsmd-4Go1G8",
+									"value": "{{token}}",
 									"type": "string"
 								}
 							]
@@ -317,23 +405,22 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:9000/outlet",
+							"raw": "{{base_url}}/outlet",
 							"host": [
-								"localhost"
+								"{{base_url}}"
 							],
-							"port": "9000",
 							"path": [
 								"outlet"
 							],
 							"query": [
 								{
 									"key": "q",
-									"value": null,
+									"value": "",
 									"disabled": true
 								},
 								{
 									"key": "limit",
-									"value": "2",
+									"value": "",
 									"disabled": true
 								},
 								{
@@ -354,7 +441,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImVrYXByYXRhbWEzNjNAZ21haWwuY29tIiwiaXNfYWRtaW4iOjAsImV4cCI6MTY1OTM0NzQ3Mn0.xT05DLss4tCpq3xRXGndsG228kGhXos4n-YbvJxnVcM",
+									"value": "{{token}}",
 									"type": "string"
 								}
 							]
@@ -363,7 +450,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\": \"outlet 1\"\n}",
+							"raw": "{\n    \"name\": \"outlet 290\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -371,14 +458,306 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:9000/outlet/store",
+							"raw": "{{base_url}}/outlet/store",
 							"host": [
-								"localhost"
+								"{{base_url}}"
 							],
-							"port": "9000",
 							"path": [
 								"outlet",
 								"store"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "product",
+			"item": [
+				{
+					"name": "list",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/product?limit=20&offset=0",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"product"
+							],
+							"query": [
+								{
+									"key": "q",
+									"value": "sam",
+									"disabled": true
+								},
+								{
+									"key": "limit",
+									"value": "20"
+								},
+								{
+									"key": "offset",
+									"value": "0"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "store",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"outlet_id\": 17,\n    \"category_id\": 6,\n    \"name\": \"piring\",\n    \"description\": \"piring\",\n    \"price\": 1000\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/product/store",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"product",
+								"store"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"outlet_id\": 17,\n    \"name\": \"sabun mandi\",\n    \"description\": \"sabun mandi\",\n    \"price\": 1000\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/product/update/1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"product",
+								"update",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "show",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/product/show/8",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"product",
+								"show",
+								"8"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/product/delete/1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"product",
+								"delete",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "transaction",
+			"item": [
+				{
+					"name": "list",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/transaction?limit=20&offset=0",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"transaction"
+							],
+							"query": [
+								{
+									"key": "q",
+									"value": "sam",
+									"disabled": true
+								},
+								{
+									"key": "limit",
+									"value": "20"
+								},
+								{
+									"key": "offset",
+									"value": "0"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "store",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"outlet_id\": 17,\n    \"customer_name\": \"eka\",\n    \"products\": [\n        {\n            \"id\": 4,\n            \"quantity\": 3,\n            \"note\": \"ini catatan\"\n        },\n        {\n            \"id\": 5,\n            \"quantity\": 2,\n            \"note\": \"ini catatan 2\"\n        }\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/transaction/store",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"transaction",
+								"store"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "show",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/transaction/show/2",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"transaction",
+								"show",
+								"2"
 							]
 						}
 					},
@@ -407,11 +786,10 @@
 					]
 				},
 				"url": {
-					"raw": "localhost:9000/login",
+					"raw": "{{base_url}}/login",
 					"host": [
-						"localhost"
+						"{{base_url}}"
 					],
-					"port": "9000",
 					"path": [
 						"login"
 					]
@@ -425,11 +803,10 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "localhost:9000/redis-ping",
+					"raw": "{{base_url}}/redis-ping",
 					"host": [
-						"localhost"
+						"{{base_url}}"
 					],
-					"port": "9000",
 					"path": [
 						"redis-ping"
 					]
