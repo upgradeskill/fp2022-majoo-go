@@ -23,7 +23,7 @@
 - Server akan berjalan pada `http://localhost:9000`
 
 ## 3. ERD Mini POS 
-[![Screen-Shot-2022-08-11-at-14-13-27.png](https://i.postimg.cc/K8hLF352/Screen-Shot-2022-08-11-at-14-13-27.png)](https://postimg.cc/gn4rHJ5S)
+![Imgur](https://i.postimg.cc/K8hLF352/Screen-Shot-2022-08-11-at-14-13-27.png)
 
 ## 5 API List
  - **User**
