@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"context"
+	"mini-pos/cmd/util/gorm"
 	"mini-pos/configs"
 	userService "mini-pos/core/user/service"
 	userHandler "mini-pos/handlers/api/user"
@@ -44,15 +45,18 @@ var apiCmd = &cobra.Command{
 		})
 		logrus.SetLevel(logrus.InfoLevel)
 		logrus.SetOutput(os.Stderr)
+		dbCon, err := configs.ConnectDBMySql()
+		if err != nil {
+			log.Fatal(err)
+			panic(err)
+		}
 
-		configs.ConnectDB()
-
-		// gormDb, err := gorm.InitGorm(dbCon)
-		// if err != nil {
-		// 	dbCon.Close()
-		// 	log.Fatal(err)
-		// 	panic(err)
-		// }
+		gormDb, err := gorm.InitGorm(dbCon)
+		if err != nil {
+			dbCon.Close()
+			log.Fatal(err)
+			panic(err)
+		}
 
 		user, err := userRepository.New(gormDb)
 		if err != nil {
@@ -70,7 +74,7 @@ var apiCmd = &cobra.Command{
 
 		go func() {
 			if err := e.Start(":2022"); err != nil {
-				// dbCon.Close()
+				dbCon.Close()
 				log.Fatal(err)
 				panic(err)
 			}
@@ -84,7 +88,7 @@ var apiCmd = &cobra.Command{
 		defer cancel()
 
 		if err := e.Shutdown(ctx); err != nil {
-			// dbCon.Close()
+			dbCon.Close()
 			log.Fatal(err)
 			panic(err)
 		}
