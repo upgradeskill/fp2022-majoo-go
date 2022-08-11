@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: mariadb
--- Generation Time: Aug 10, 2022 at 10:51 AM
+-- Generation Time: Aug 11, 2022 at 06:35 AM
 -- Server version: 10.8.3-MariaDB-1:10.8.3+maria~jammy
 -- PHP Version: 8.0.19
 
@@ -38,7 +38,8 @@ CREATE TABLE `categories` (
 --
 
 INSERT INTO `categories` (`id`, `outlet_id`, `name`) VALUES
-(6, 17, 'Peralatan Rumah Tangga jjj');
+(6, 17, 'Peralatan Rumah Tangga'),
+(8, 17, 'Peralatan Mandi');
 
 -- --------------------------------------------------------
 
@@ -108,6 +109,17 @@ CREATE TABLE `products` (
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Dumping data for table `products`
+--
+
+INSERT INTO `products` (`id`, `outlet_id`, `category_id`, `name`, `description`, `price`, `created_at`) VALUES
+(4, 17, 6, 'sampo mandi', 'sampo mandi', 1000, '2022-08-10 17:58:01'),
+(5, 17, 6, 'sabun mandi', 'sabun mandi', 1000, '2022-08-11 08:07:19'),
+(6, 17, 6, 'sikat gigi', 'sikat gigi', 1000, '2022-08-11 08:08:12'),
+(7, 17, 6, 'sikat gigi', 'sikat gigi', 1000, '2022-08-11 08:12:43'),
+(8, 17, 6, 'piring', 'piring', 1000, '2022-08-11 12:35:58');
+
 -- --------------------------------------------------------
 
 --
@@ -124,6 +136,16 @@ CREATE TABLE `transactions` (
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Dumping data for table `transactions`
+--
+
+INSERT INTO `transactions` (`id`, `outlet_id`, `code`, `customer_name`, `total`, `created_by`, `created_at`) VALUES
+(2, 17, '1660195236', 'eka', 0, 18, '2022-08-11 05:20:36'),
+(3, 17, '1660195327', 'eka', 0, 18, '2022-08-11 05:22:07'),
+(4, 17, '1660195351', 'eka', 0, 18, '2022-08-11 05:22:31'),
+(5, 17, '1660196429', 'eka', 0, 18, '2022-08-11 05:40:29');
+
 -- --------------------------------------------------------
 
 --
@@ -139,6 +161,20 @@ CREATE TABLE `transaction_details` (
   `note` varchar(50) NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `transaction_details`
+--
+
+INSERT INTO `transaction_details` (`id`, `transaction_id`, `product_id`, `quantity`, `price`, `note`, `created_at`) VALUES
+(1, 2, 4, 3, 3000, 'ini catatan', '2022-08-11 05:20:36'),
+(2, 2, 5, 2, 2000, 'ini catatan 2', '2022-08-11 05:20:36'),
+(3, 3, 4, 3, 3000, 'ini catatan', '2022-08-11 05:22:07'),
+(4, 3, 5, 2, 2000, 'ini catatan 2', '2022-08-11 05:22:07'),
+(5, 4, 4, 3, 3000, 'ini catatan', '2022-08-11 05:22:31'),
+(6, 4, 5, 2, 2000, 'ini catatan 2', '2022-08-11 05:22:31'),
+(7, 5, 4, 3, 3000, 'ini catatan', '2022-08-11 05:40:29'),
+(8, 5, 5, 2, 2000, 'ini catatan 2', '2022-08-11 05:40:29');
 
 -- --------------------------------------------------------
 
@@ -161,7 +197,8 @@ CREATE TABLE `users` (
 INSERT INTO `users` (`id`, `name`, `email`, `password`, `is_admin`) VALUES
 (1, 'update', 'ekapratama363@gmail.com', '1234', 0),
 (18, 'admin', 'admin@gmail.com', '1234', 1),
-(20, 'admin2', 'eka@gmail.com', '1234', 1);
+(20, 'admin2', 'eka@gmail.com', '1234', 1),
+(21, 'admin2', 'admin3@gmail.coms', '1234', 1);
 
 --
 -- Indexes for dumped tables
@@ -227,7 +264,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `categories`
 --
 ALTER TABLE `categories`
-  MODIFY `id` bigint(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` bigint(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `outlets`
@@ -245,25 +282,25 @@ ALTER TABLE `outlet_users`
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `transactions`
 --
 ALTER TABLE `transactions`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `transaction_details`
 --
 ALTER TABLE `transaction_details`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` bigint(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `id` bigint(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- Constraints for dumped tables
