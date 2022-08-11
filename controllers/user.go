@@ -1,16 +1,47 @@
 package controllers
 
 import (
+	"fmt"
+	"mini-pos/helpers"
 	model "mini-pos/models"
 	"mini-pos/structs"
 	"net/http"
+	"strconv"
 
 	"github.com/labstack/echo/v4"
 )
 
 func UserList(c echo.Context) error {
 	response := new(structs.Response)
-	users, err := model.GetAllUser(c.QueryParam("q")) // method get all
+
+	auth, _ := helpers.Auth(c)
+	userId := fmt.Sprint(auth["id"])
+	getOutletUserByUserId, err := model.GetOutletUserByUserId(userId)
+
+	if err != nil {
+		response.Message = "Kamu belum memiliki outlet"
+		return c.JSON(http.StatusBadRequest, response)
+	}
+
+	outletsId := make([]interface{}, len(getOutletUserByUserId))
+	for i := 0; i < len(getOutletUserByUserId); i++ {
+		outletsId[i] = getOutletUserByUserId[i].OutletId
+	}
+
+	getOutletUserByOutletId, err := model.GetOutletUserByOutletId(outletsId)
+	if err != nil {
+		response.Message = "Gagal get outlet user"
+		return c.JSON(http.StatusBadRequest, response)
+	}
+
+	usersId := make([]interface{}, len(getOutletUserByOutletId))
+	for i := 0; i < len(getOutletUserByOutletId); i++ {
+		usersId[i] = getOutletUserByOutletId[i].UserId
+	}
+
+	limit, _ := strconv.Atoi(c.QueryParam("limit"))
+	offset, _ := strconv.Atoi(c.QueryParam("offset"))
+	users, err := model.GetAllUser(c.QueryParam("q"), usersId, limit, offset) // method get all
 
 	if err != nil {
 		response.Message = "Gagal melihat data"
@@ -26,7 +57,7 @@ func UserStore(c echo.Context) error {
 	user := new(structs.Users)
 	c.Bind(user)
 
-	response := new(structs.Response)
+	response := new(structs.ResponsePagination)
 	checkUser, _ := model.GetOneUserByEmail(user.Email) // method get by email
 
 	if checkUser.Email == user.Email {
@@ -39,7 +70,7 @@ func UserStore(c echo.Context) error {
 		return c.JSON(http.StatusInternalServerError, response)
 	} else {
 		response.Message = "Sukses create data"
-		response.Data = *user
+		response.Data = user
 		return c.JSON(http.StatusOK, response)
 	}
 }

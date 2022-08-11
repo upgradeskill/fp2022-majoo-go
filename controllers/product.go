@@ -11,7 +11,7 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-func CategoryList(c echo.Context) error {
+func ProductList(c echo.Context) error {
 	response := new(structs.ResponsePagination)
 
 	auth, _ := helpers.Auth(c)
@@ -30,41 +30,41 @@ func CategoryList(c echo.Context) error {
 
 	limit, _ := strconv.Atoi(c.QueryParam("limit"))
 	offset, _ := strconv.Atoi(c.QueryParam("offset"))
-	categories, err := model.GetAllCategory(c.QueryParam("q"), outletsId, limit, offset) // method get all
+	products, err := model.GetAllProduct(c.QueryParam("q"), outletsId, limit, offset) // method get all
 
 	if err != nil {
 		response.Message = "Gagal melihat data"
 		return c.JSON(http.StatusBadRequest, response)
 	} else {
 		response.Message = "Sukses melihat data"
-		response.Data = categories
+		response.Data = products
 		response.Limit = limit
 		response.Offset = offset
 		return c.JSON(http.StatusOK, response)
 	}
 }
 
-func CategoryStore(c echo.Context) error {
-	category := new(structs.Categories)
-	c.Bind(category)
+func ProductStore(c echo.Context) error {
+	product := new(structs.Products)
+	c.Bind(product)
 	contentType := c.Request().Header.Get("Content-type")
 	if contentType == "application/json" {
 		fmt.Println("Request dari json")
 	}
 	response := new(structs.Response)
 
-	if model.CreateCategory(category) != nil { // method create category
+	if model.CreateProduct(product) != nil { // method create product
 		response.Message = "Gagal create data"
 		return c.JSON(http.StatusInternalServerError, response)
 	} else {
 		response.Message = "Sukses create data"
-		// response.Data = *category
+		// response.Data = *product
 		return c.JSON(http.StatusOK, response)
 	}
 }
 
-func CategoryShow(c echo.Context) error {
-	category, err := model.GetOneCategoryById(c.Param("id")) // method get by email
+func ProductShow(c echo.Context) error {
+	product, err := model.GetOneProductById(c.Param("id")) // method get by email
 	response := new(structs.Response)
 
 	if err != nil {
@@ -72,30 +72,30 @@ func CategoryShow(c echo.Context) error {
 		return c.JSON(http.StatusNotFound, response)
 	} else {
 		response.Message = "Sukses melihat data"
-		response.Data = category
+		response.Data = product
 		return c.JSON(http.StatusOK, response)
 	}
 }
 
-func CategoryUpdate(c echo.Context) error {
-	category := new(structs.Categories)
-	c.Bind(category)
+func ProductUpdate(c echo.Context) error {
+	product := new(structs.Products)
+	c.Bind(product)
 	response := new(structs.Response)
-	if model.UpdateCategory(c.Param("id"), category) != nil { // method update category
+	if model.UpdateProduct(c.Param("id"), product) != nil { // method update product
 		response.Message = "Gagal update data"
 		return c.JSON(http.StatusInternalServerError, response)
 	} else {
 		response.Message = "Sukses update data"
-		// response.Data = *categorys
+		// response.Data = *product
 		return c.JSON(http.StatusOK, response)
 	}
 }
 
-func CategoryDelete(c echo.Context) error {
-	category, _ := model.GetOneCategoryById(c.Param("id"))
+func ProductDelete(c echo.Context) error {
+	product, _ := model.GetOneProductById(c.Param("id"))
 	response := new(structs.Response)
 
-	if model.DeleteCategory(&category) != nil {
+	if model.DeleteProduct(&product) != nil {
 		response.Message = "data tidak ditemukan"
 		return c.JSON(http.StatusNotFound, response)
 	} else {

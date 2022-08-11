@@ -27,6 +27,7 @@ func Api() {
 
 	// Login route
 	route.POST("/login", controller.Login)
+	route.POST("/register", controller.Register)
 	route.GET("/redis-ping", controller.RedisPing)
 
 	// Restricted group
@@ -50,9 +51,19 @@ func Api() {
 	outletRoute.Use(middleware.JWTWithConfig(config))
 	outletRoute.GET("", controller.OutletList)
 	outletRoute.POST("/store", controller.OutletStore)
-	// outletRoute.GET("/show/:id", controller.OutletShow)
-	// outletRoute.PUT("/update/:id", controller.OutletUpdate)
-	// outletRoute.DELETE("/delete/:id", controller.OutletDelete)
 
+	productRoute := route.Group("/product")
+	productRoute.Use(middleware.JWTWithConfig(config))
+	productRoute.GET("", controller.ProductList)
+	productRoute.POST("/store", controller.ProductStore)
+	productRoute.GET("/show/:id", controller.ProductShow)
+	productRoute.PUT("/update/:id", controller.ProductUpdate)
+	productRoute.DELETE("/delete/:id", controller.ProductDelete)
+
+	transactionRoute := route.Group("/transaction")
+	transactionRoute.Use(middleware.JWTWithConfig(config))
+	transactionRoute.GET("", controller.TransactionList)
+	transactionRoute.POST("/store", controller.TransactionStore)
+	transactionRoute.GET("/show/:id", controller.TransactionShow)
 	route.Start(":9000")
 }

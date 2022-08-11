@@ -17,3 +17,9 @@ func GetOutletUserByUserId(userId string) ([]structs.OutletUsers, error) {
 	result := database.DB.Where("user_id = ?", userId).Find(&outletUsers)
 	return outletUsers, result.Error
 }
+
+func GetOutletUserByOutletId(outletsId []interface{}) ([]structs.OutletUsers, error) {
+	var outletUsers []structs.OutletUsers
+	result := database.DB.Where("outlet_id IN ?", outletsId).Find(&outletUsers)
+	return outletUsers, result.Error
+}
