@@ -24,7 +24,6 @@
 
 ## 3. ERD Mini POS 
 <img width="641" alt="Screen Shot 2022-08-11 at 14 13 27" src="https://user-images.githubusercontent.com/34295173/184086772-9a3e8fb9-5be7-4f0a-bf99-7443562704fc.png">
-)
 
 ## 5 API List
  - **User**
