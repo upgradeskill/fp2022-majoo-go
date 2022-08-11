@@ -43,7 +43,7 @@ func ProductStore(c echo.Context) error {
 		return c.JSON(http.StatusInternalServerError, response)
 	} else {
 		response.Message = "Sukses create data"
-		response.Data = *product
+		// response.Data = *product
 		return c.JSON(http.StatusOK, response)
 	}
 }
@@ -71,7 +71,7 @@ func ProductUpdate(c echo.Context) error {
 		return c.JSON(http.StatusInternalServerError, response)
 	} else {
 		response.Message = "Sukses update data"
-		response.Data = *product
+		// response.Data = *product
 		return c.JSON(http.StatusOK, response)
 	}
 }

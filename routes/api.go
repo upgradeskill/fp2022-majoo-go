@@ -59,5 +59,10 @@ func Api() {
 	productRoute.PUT("/update/:id", controller.ProductUpdate)
 	productRoute.DELETE("/delete/:id", controller.ProductDelete)
 
+	transactionRoute := route.Group("/transaction")
+	transactionRoute.Use(middleware.JWTWithConfig(config))
+	transactionRoute.GET("", controller.TransactionList)
+	transactionRoute.POST("/store", controller.TransactionStore)
+	transactionRoute.GET("/show/:id", controller.TransactionShow)
 	route.Start(":9000")
 }

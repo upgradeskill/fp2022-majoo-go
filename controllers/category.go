@@ -43,7 +43,7 @@ func CategoryStore(c echo.Context) error {
 		return c.JSON(http.StatusInternalServerError, response)
 	} else {
 		response.Message = "Sukses create data"
-		response.Data = *category
+		// response.Data = *category
 		return c.JSON(http.StatusOK, response)
 	}
 }
@@ -71,7 +71,7 @@ func CategoryUpdate(c echo.Context) error {
 		return c.JSON(http.StatusInternalServerError, response)
 	} else {
 		response.Message = "Sukses update data"
-		response.Data = *category
+		// response.Data = *categorys
 		return c.JSON(http.StatusOK, response)
 	}
 }

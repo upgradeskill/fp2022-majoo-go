@@ -28,7 +28,7 @@ func DeleteProduct(product *structs.Products) error {
 
 func GetOneProductById(id string) (structs.Products, error) {
 	var product structs.Products
-	result := database.DB.Where("id = ?", id).First(&product)
+	result := database.DB.Preload("Category").Where("id = ?", id).First(&product)
 	return product, result.Error
 }
 

@@ -75,7 +75,7 @@ func OutletStore(c echo.Context) error {
 			return c.JSON(http.StatusInternalServerError, response)
 		} else {
 			response.Message = "Sukses create data"
-			response.Data = outlet
+			// response.Data = outlets
 			return c.JSON(http.StatusOK, response)
 		}
 	}
