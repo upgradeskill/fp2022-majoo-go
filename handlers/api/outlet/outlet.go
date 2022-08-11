@@ -13,8 +13,8 @@ type OutletInsertRequest struct {
 }
 
 type OutletUserInsertRequest struct {
-	OutletId int `json:"outlet_id" validate:"required"`
-	UserId   int `json:"user_id" validate:"required"`
+	OutletId uint `json:"outlet_id" validate:"required"`
+	UserId   uint `json:"user_id" validate:"required"`
 }
 
 type OutletUpdatRequest struct {
@@ -26,8 +26,8 @@ type OutletUpdateByIdRequest struct {
 }
 
 type OutletUserUpdateByIdRequest struct {
-	OutletId int `json:"outlet_id" validate:"required"`
-	UserId   int `json:"user_id" validate:"required"`
+	OutletId uint `json:"outlet_id" validate:"required"`
+	UserId   uint `json:"user_id" validate:"required"`
 }
 
 type OutletDefaultResponse struct {
@@ -35,10 +35,24 @@ type OutletDefaultResponse struct {
 	Name string `json:"email"`
 }
 
+type OutletUserDefaultResponse struct {
+	Id       uint `json:"id"`
+	OutletId uint `json:"outlet_id"`
+	UserId   uint `json:"user_id"`
+}
+
 func OutletNewDefaultResponse(data *entity.Outlet) *OutletDefaultResponse {
 	return &OutletDefaultResponse{
 		Id:   data.Id,
 		Name: data.Name,
+	}
+}
+
+func OutletUserNewDefaultResponse(data *entity.OutletUser) *OutletUserDefaultResponse {
+	return &OutletUserDefaultResponse{
+		Id:       data.Id,
+		OutletId: data.OutletId,
+		UserId:   data.UserId,
 	}
 }
 
@@ -80,6 +94,31 @@ func (handler Handler) OutletCreate(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, util.NewResponse("", result, nil))
 	}
 	return c.JSON(http.StatusCreated, util.NewResponse("", util.Map["created"], OutletNewDefaultResponse(result)))
+}
+
+func (handler Handler) OutletUserCreate(c echo.Context) error {
+	bodyRequest := new(OutletUserInsertRequest)
+	if err := c.Bind(bodyRequest); err != nil {
+		result := util.Map["badRequest"]
+		return c.JSON(http.StatusBadRequest, util.NewResponse("", result, nil))
+	}
+	if err := c.Validate(bodyRequest); err != nil {
+		errors := util.BuildErrorBodyRequestValidator(err)
+		result := util.Map["badRequest"]
+		result.Errors = errors
+		return c.JSON(http.StatusBadRequest, util.NewResponse("", result, nil))
+	}
+	data := entity.OutletUser{
+		OutletId: bodyRequest.OutletId,
+		UserId:   bodyRequest.UserId,
+	}
+	result, err := handler.service.OutletUserCreate(data)
+	if err != nil {
+		result := util.Map["badRequest"]
+		result.Errors = append(result.Errors, err.Error())
+		return c.JSON(http.StatusBadRequest, util.NewResponse("", result, nil))
+	}
+	return c.JSON(http.StatusCreated, util.NewResponse("", util.Map["created"], OutletUserNewDefaultResponse(result)))
 }
 
 func (handler Handler) OutletFindById(c echo.Context) error {

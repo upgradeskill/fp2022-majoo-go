@@ -1,4 +1,4 @@
-package outlet
+package outletuser
 
 import (
 	"mini-pos/core/outlet/entity"

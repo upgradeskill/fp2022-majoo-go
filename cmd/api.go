@@ -10,7 +10,7 @@ import (
 	userHandler "mini-pos/handlers/api/user"
 	utilHandler "mini-pos/handlers/util"
 	outletRepository "mini-pos/repositories/outlet"
-	outletUserRepository "mini-pos/repositories/outletUser"
+	outletUserRepository "mini-pos/repositories/outletuser"
 	userRepository "mini-pos/repositories/user"
 	"mini-pos/util/logger"
 	"os"
