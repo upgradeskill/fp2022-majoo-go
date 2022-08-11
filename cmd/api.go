@@ -10,6 +10,7 @@ import (
 	userHandler "mini-pos/handlers/api/user"
 	utilHandler "mini-pos/handlers/util"
 	outletRepository "mini-pos/repositories/outlet"
+	outletUserRepository "mini-pos/repositories/outletUser"
 	userRepository "mini-pos/repositories/user"
 	"mini-pos/util/logger"
 	"os"
@@ -68,11 +69,16 @@ var apiCmd = &cobra.Command{
 		userServices := userService.New(user)
 		userHandlers := userHandler.New(userServices)
 
+		outletUser, err := outletUserRepository.New(gormDb)
+		if err != nil {
+			log.Error(err)
+		}
+
 		outlet, err := outletRepository.New(gormDb)
 		if err != nil {
 			log.Error(err)
 		}
-		outletServices := outletService.New(outlet)
+		outletServices := outletService.New(outletUser, outlet)
 		outletHandlers := outletHandler.New(outletServices)
 
 		e := echo.New()
@@ -81,6 +87,7 @@ var apiCmd = &cobra.Command{
 		e.Validator = &utilHandler.BodyRequestValidator{Validator: CustomValidator()}
 
 		userHandler.RegisterRouter(e, userHandlers)
+		outletHandler.RegisterRouter(e, outletHandlers)
 
 		go func() {
 			if err := e.Start(":2022"); err != nil {
