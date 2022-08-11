@@ -57,7 +57,7 @@ func UserStore(c echo.Context) error {
 	user := new(structs.Users)
 	c.Bind(user)
 
-	response := new(structs.Response)
+	response := new(structs.ResponsePagination)
 	checkUser, _ := model.GetOneUserByEmail(user.Email) // method get by email
 
 	if checkUser.Email == user.Email {
@@ -70,7 +70,7 @@ func UserStore(c echo.Context) error {
 		return c.JSON(http.StatusInternalServerError, response)
 	} else {
 		response.Message = "Sukses create data"
-		response.Data = *user
+		response.Data = user
 		return c.JSON(http.StatusOK, response)
 	}
 }

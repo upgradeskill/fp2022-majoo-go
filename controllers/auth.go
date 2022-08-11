@@ -57,6 +57,28 @@ func Login(c echo.Context) error {
 	}
 }
 
+func Register(c echo.Context) error {
+	user := new(structs.Users)
+	c.Bind(user)
+
+	response := new(structs.Response)
+	checkUser, _ := model.GetOneUserByEmail(user.Email) // method get by email
+
+	if checkUser.Email == user.Email {
+		response.Message = "Email sudah pernah terdaftar"
+		return c.JSON(http.StatusBadRequest, response)
+	}
+
+	if model.CreateUser(user) != nil { // method create user
+		response.Message = "Gagal create data"
+		return c.JSON(http.StatusInternalServerError, response)
+	} else {
+		response.Message = "Sukses create data"
+		response.Data = user
+		return c.JSON(http.StatusOK, response)
+	}
+}
+
 func RedisPing(c echo.Context) error {
 	client := configs.RedisClient()
 

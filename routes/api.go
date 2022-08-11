@@ -27,6 +27,7 @@ func Api() {
 
 	// Login route
 	route.POST("/login", controller.Login)
+	route.POST("/register", controller.Register)
 	route.GET("/redis-ping", controller.RedisPing)
 
 	// Restricted group
