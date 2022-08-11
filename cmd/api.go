@@ -4,9 +4,12 @@ import (
 	"context"
 	"mini-pos/cmd/util/gorm"
 	"mini-pos/configs"
+	outletService "mini-pos/core/outlet/service"
 	userService "mini-pos/core/user/service"
+	outletHandler "mini-pos/handlers/api/outlet"
 	userHandler "mini-pos/handlers/api/user"
 	utilHandler "mini-pos/handlers/util"
+	outletRepository "mini-pos/repositories/outlet"
 	userRepository "mini-pos/repositories/user"
 	"mini-pos/util/logger"
 	"os"
@@ -64,6 +67,13 @@ var apiCmd = &cobra.Command{
 		}
 		userServices := userService.New(user)
 		userHandlers := userHandler.New(userServices)
+
+		outlet, err := outletRepository.New(gormDb)
+		if err != nil {
+			log.Error(err)
+		}
+		outletServices := outletService.New(outlet)
+		outletHandlers := outletHandler.New(outletServices)
 
 		e := echo.New()
 		e.HideBanner = true
