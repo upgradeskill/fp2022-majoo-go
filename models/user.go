@@ -38,9 +38,12 @@ func GetOneUserByEmail(email string) (structs.Users, error) {
 	return user, result.Error
 }
 
-func GetAllUser(q string) ([]structs.Users, error) {
+func GetAllUser(q string, usersId []interface{}, limit int, offset int) ([]structs.Users, error) {
 	var users []structs.Users
-	result := database.DB.Where("email LIKE ? OR name LIKE ?", "%"+q+"%", "%"+q+"%").Find(&users)
+	result := database.DB.
+		Preload("OutletUsers").
+		Where("id IN ? ", usersId).
+		Where("email LIKE ? OR name LIKE ?", "%"+q+"%", "%"+q+"%").Find(&users)
 
 	return users, result.Error
 }
