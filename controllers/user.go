@@ -12,36 +12,19 @@ import (
 )
 
 func UserList(c echo.Context) error {
-	response := new(structs.Response)
+	response := new(structs.ResponsePagination)
 
 	auth, _ := helpers.Auth(c)
-	userId := fmt.Sprint(auth["id"])
-	getOutletUserByUserId, err := model.GetOutletUserByUserId(userId)
+	isAdmin := fmt.Sprint(auth["is_admin"])
 
-	if err != nil {
-		response.Message = "Kamu belum memiliki outlet"
+	if isAdmin == "0" {
+		response.Message = "Hanya admin yang bisa melihat list user"
 		return c.JSON(http.StatusBadRequest, response)
-	}
-
-	outletsId := make([]interface{}, len(getOutletUserByUserId))
-	for i := 0; i < len(getOutletUserByUserId); i++ {
-		outletsId[i] = getOutletUserByUserId[i].OutletId
-	}
-
-	getOutletUserByOutletId, err := model.GetOutletUserByOutletId(outletsId)
-	if err != nil {
-		response.Message = "Gagal get outlet user"
-		return c.JSON(http.StatusBadRequest, response)
-	}
-
-	usersId := make([]interface{}, len(getOutletUserByOutletId))
-	for i := 0; i < len(getOutletUserByOutletId); i++ {
-		usersId[i] = getOutletUserByOutletId[i].UserId
 	}
 
 	limit, _ := strconv.Atoi(c.QueryParam("limit"))
 	offset, _ := strconv.Atoi(c.QueryParam("offset"))
-	users, err := model.GetAllUser(c.QueryParam("q"), usersId, limit, offset) // method get all
+	users, err := model.GetAllUser(c.QueryParam("q"), limit, offset) // method get all
 
 	if err != nil {
 		response.Message = "Gagal melihat data"
@@ -49,6 +32,8 @@ func UserList(c echo.Context) error {
 	} else {
 		response.Message = "Sukses melihat data"
 		response.Data = users
+		response.Limit = limit
+		response.Offset = offset
 		return c.JSON(http.StatusOK, response)
 	}
 }

@@ -34,14 +34,14 @@ func TransactionList(c echo.Context) error {
 
 	limit, _ := strconv.Atoi(c.QueryParam("limit"))
 	offset, _ := strconv.Atoi(c.QueryParam("offset"))
-	categories, err := model.GetAllTransaction(c.QueryParam("q"), outletsId, limit, offset) // method get all
+	transactions, err := model.GetAllTransaction(c.QueryParam("q"), outletsId, limit, offset) // method get all
 
 	if err != nil {
 		response.Message = "Gagal melihat data"
 		return c.JSON(http.StatusBadRequest, response)
 	} else {
 		response.Message = "Sukses melihat data"
-		response.Data = categories
+		response.Data = transactions
 		response.Limit = limit
 		response.Offset = offset
 		return c.JSON(http.StatusOK, response)
