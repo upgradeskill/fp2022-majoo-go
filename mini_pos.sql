@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: mariadb
--- Generation Time: Jul 31, 2022 at 01:03 PM
+-- Generation Time: Aug 10, 2022 at 10:51 AM
 -- Server version: 10.8.3-MariaDB-1:10.8.3+maria~jammy
 -- PHP Version: 8.0.19
 
@@ -38,9 +38,7 @@ CREATE TABLE `categories` (
 --
 
 INSERT INTO `categories` (`id`, `outlet_id`, `name`) VALUES
-(1, 0, 'Makanan'),
-(2, 0, 'Minuman'),
-(3, 0, 'Peralatan Rumah Tangga');
+(6, 17, 'Peralatan Rumah Tangga jjj');
 
 -- --------------------------------------------------------
 
@@ -58,14 +56,15 @@ CREATE TABLE `outlets` (
 --
 
 INSERT INTO `outlets` (`id`, `name`) VALUES
-(2, 'outlet 1'),
-(3, 'outlet 1'),
-(4, 'outlet 1'),
-(5, 'outlet 1'),
-(6, 'outlet 1'),
-(7, 'outlet 1'),
-(8, 'outlet 1'),
-(9, 'outlet 1');
+(9, 'outlet 1'),
+(10, 'outlet 2'),
+(11, 'outlet 2'),
+(12, 'outlet 2'),
+(13, 'outlet 2'),
+(14, 'outlet 2'),
+(15, 'outlet 29'),
+(16, 'outlet 290'),
+(17, 'outlet 290');
 
 -- --------------------------------------------------------
 
@@ -84,7 +83,14 @@ CREATE TABLE `outlet_users` (
 --
 
 INSERT INTO `outlet_users` (`id`, `outlet_id`, `user_id`) VALUES
-(1, 9, 20);
+(1, 9, 20),
+(2, 10, 20),
+(3, 11, 20),
+(4, 12, 1),
+(6, 14, 1),
+(7, 15, 1),
+(8, 16, 18),
+(9, 17, 18);
 
 -- --------------------------------------------------------
 
@@ -95,9 +101,9 @@ INSERT INTO `outlet_users` (`id`, `outlet_id`, `user_id`) VALUES
 CREATE TABLE `products` (
   `id` bigint(20) NOT NULL,
   `outlet_id` bigint(20) NOT NULL,
+  `category_id` bigint(20) NOT NULL,
   `name` varchar(50) NOT NULL,
   `description` text NOT NULL,
-  `stock` int(11) NOT NULL,
   `price` double NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -141,7 +147,7 @@ CREATE TABLE `transaction_details` (
 --
 
 CREATE TABLE `users` (
-  `id` int(11) NOT NULL,
+  `id` bigint(11) NOT NULL,
   `name` varchar(50) NOT NULL,
   `email` varchar(50) NOT NULL,
   `password` varchar(255) NOT NULL,
@@ -187,7 +193,8 @@ ALTER TABLE `outlet_users`
 --
 ALTER TABLE `products`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `idx_outlet_id` (`outlet_id`) USING BTREE;
+  ADD KEY `idx_outlet_id` (`outlet_id`) USING BTREE,
+  ADD KEY `idx_category_id` (`category_id`) USING BTREE;
 
 --
 -- Indexes for table `transactions`
@@ -220,25 +227,25 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `categories`
 --
 ALTER TABLE `categories`
-  MODIFY `id` bigint(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` bigint(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `outlets`
 --
 ALTER TABLE `outlets`
-  MODIFY `id` bigint(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` bigint(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT for table `outlet_users`
 --
 ALTER TABLE `outlet_users`
-  MODIFY `id` bigint(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `transactions`
@@ -256,7 +263,38 @@ ALTER TABLE `transaction_details`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `id` bigint(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `categories`
+--
+ALTER TABLE `categories`
+  ADD CONSTRAINT `categories_ibfk_1` FOREIGN KEY (`outlet_id`) REFERENCES `outlets` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `outlet_users`
+--
+ALTER TABLE `outlet_users`
+  ADD CONSTRAINT `outlet_users_ibfk_1` FOREIGN KEY (`outlet_id`) REFERENCES `outlets` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `outlet_users_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `products`
+--
+ALTER TABLE `products`
+  ADD CONSTRAINT `products_ibfk_1` FOREIGN KEY (`category_id`) REFERENCES `categories` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `products_ibfk_2` FOREIGN KEY (`outlet_id`) REFERENCES `outlets` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `transaction_details`
+--
+ALTER TABLE `transaction_details`
+  ADD CONSTRAINT `transaction_details_ibfk_1` FOREIGN KEY (`transaction_id`) REFERENCES `transactions` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `transaction_details_ibfk_2` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

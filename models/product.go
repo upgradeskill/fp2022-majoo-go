@@ -34,7 +34,8 @@ func GetOneProductById(id string) (structs.Products, error) {
 
 func GetAllProduct(q string, limit int, offset int) ([]structs.Products, error) {
 	var products []structs.Products
-	result := database.DB.Where("name LIKE ?", "%"+q+"%").Limit(limit).Offset(offset).Find(&products)
+
+	result := database.DB.Preload("Category").Where("name LIKE ?", "%"+q+"%").Limit(limit).Offset(offset).Find(&products)
 
 	return products, result.Error
 }
