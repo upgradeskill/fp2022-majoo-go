@@ -82,7 +82,6 @@ func TransactionStore(c echo.Context) error {
 		transaction.OutletId = outletId
 		transaction.Code = strconv.Itoa(int(time.Now().Unix()))
 		transaction.CustomerName = fmt.Sprint(requestBody["customer_name"])
-		transaction.Total = 0
 		transaction.CreatedBy = userId
 
 		if model.CreateTransaction(transaction) != nil { // method create outlet
